@@ -141,7 +141,8 @@ def main():
         valor_depositado += rodada(valor_depositado)
 
     print(f"Você tem R${valor_depositado}")
-    
+    print("Isso é tudo pessoal")
+
 #Essa é, muito possivelmente a versao final
 
 main()
