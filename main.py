@@ -8,6 +8,7 @@ APOSTA_MINIMA = 1
 LINHAS = 3
 COLUNAS = 3
 
+#Itens da roleta
 cont_simbolos = {
     "A":2,
     "B":4,
@@ -15,6 +16,30 @@ cont_simbolos = {
     "D":8
 }
 
+valores_simbolos = {
+    "A":5,
+    "B":4,
+    "C":3,
+    "D":2
+}
+
+#Função para verificar se o usuário ganhou. Em caso positivo, quanto
+def checar_resultados(colunas, linhas, aposta, valores_simbolos):
+    ganhos = 0
+    linhas_vencedoras = []
+    for linha in range(linhas):
+        simbolo = colunas[0][linha]
+        for coluna in colunas:
+            simbolo_para_checar = coluna[linha]
+            if simbolo != simbolo_para_checar:
+                break
+        else:
+            ganhos += valores_simbolos[simbolo] * aposta
+            linhas_vencedoras.append(linha + 1)
+    return ganhos, linhas_vencedoras
+
+
+#função para criar o resultado da roleta
 def resultado_da_aposta(linhas, colunas, simbolos):
     todos_simbolos = []
     for simbolo, cont_simbolos in simbolos.items():
@@ -33,14 +58,16 @@ def resultado_da_aposta(linhas, colunas, simbolos):
     return col
     #EXPLICAÇÃO NO TEMPO 29:55
 
+#função para mostrar ao usuário o resultado da roleta
 def mostrar_resultado(colunas):
     for linha in range(len(colunas[0])):
         for i, coluna in enumerate(colunas):
             if i  != len(colunas) - 1:
-                print(coluna[linha], "|")
+                print(coluna[linha], end = " | ")
             else:
-                print(coluna[linha])
+                print(coluna[linha],end =" ")
 
+        print()
 
 #função para receber o deposito
 def deposito():
@@ -56,6 +83,7 @@ def deposito():
             print("Por favor, digite um valor")
     return deposito
 
+#Função para saber em quantas linhas será apostado
 def numero_linhas():
     while True:
         linhas = input("Quantidade de linhas que você vai apostar (1-" + str(MAXIMO_LINHAS) + "): ")
@@ -83,13 +111,13 @@ def valor_aposta_linha():
             print("Por favor, digite um valor")
     return aposta
 
-def main():
-    valor_depositado = deposito()
+def rodada(valor_depositado):
     linhas = numero_linhas()
+    # Loop de para verificar se o valor da aposta é válido
     while True:
         aposta = valor_aposta_linha()
         valor_total = aposta * linhas
-        if valor_total >= valor_depositado:
+        if valor_total > valor_depositado:
             print(f"Você nao tem o suficiente para fazer essa aposta, seu saldo é R$ {valor_depositado} ")
         else:
             break
@@ -98,5 +126,21 @@ def main():
 
     slots = resultado_da_aposta(LINHAS, COLUNAS, cont_simbolos)
     mostrar_resultado(slots)
+    ganhos, linhas_vencedoras = checar_resultados(slots, linhas, aposta, valores_simbolos)
+    print(f"Vocẽ ganhou R$ {ganhos}")
+    print(f"Vocẽ ganhou na linha(s): ", *linhas_vencedoras)
+    return ganhos - valor_total
+
+
+def main():
+    valor_depositado = deposito()
+    while True:
+        print(f"Valor atual disponível R${valor_depositado} ")
+        spin = input("Pressione enter para apostar ou 's' para sair ")
+        if spin == 'q':
+            break
+        valor_depositado += rodada(valor_depositado)
+
+    print(f"Você tem R${valor_depositado}")
 
 main()
