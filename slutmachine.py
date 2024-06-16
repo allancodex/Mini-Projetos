@@ -136,7 +136,7 @@ def main():
     while True:
         print(f"Valor atual disponível R${valor_depositado} ")
         spin = input("Pressione enter para apostar ou 's' para sair ")
-        if spin == 'q':
+        if spin == 's':
             break
         valor_depositado += rodada(valor_depositado)
 
