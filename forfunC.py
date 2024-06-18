@@ -6,13 +6,9 @@ nomes = ['bob','syd','beau']
 
 #função que atribui código ao nome do funcionãrio
 def org_funcionarios(nomes):
-    for index, nome in enumerate(nomes):
-        return index, nome
-
-#função que mostra todos os funcionários e seus códigos
-def indentificar_funcionario(index, nome):
-    for index, nome in enumerate(nomes):
-        print(f'Código do funcionário: {index}, nome do funcionário: {nome}')
+    for index, nome in enumerate(nomes):     
+        func = {'codigo': index, 'nome': nome}
+        print(func)
 
 org_funcionarios(nomes)
-indentificar_funcionario(index, nome)
+
