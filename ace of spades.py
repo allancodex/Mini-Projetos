@@ -182,20 +182,3 @@ class Game:
     
 g = Game()
 g.play()
-  
-
-  
-  
-
-
-
-
-
-
-  
-
-
-
-
-
-
