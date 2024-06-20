@@ -73,12 +73,11 @@ class Hand:
   def is_black_jack(self):
     return self.get_value == 21
     
-  def display(self, show_all_dealer_cards = False):
+  def display(self, show_all_dealer_cards=False):
     print(f'''{"Dealer's" if self.dealer else "Your"} hand:''')
     for index, card in enumerate(self.cards):
-      if index == 0 and self.dealer \
-      and not show_all_dealer_cards and not self.is_black_jack:
-        print('hidden')
+      if index == 0 and self.dealer and not show_all_dealer_cards and not self.is_black_jack():
+        print('hidden')  
       else:
         print(card)
 
@@ -123,7 +122,7 @@ class Game:
       choice = ''
       while player_hand.get_value() < 21 and choice not in ['s', 'stand']:
         choice = input('Please choose "Hit" or "Stand": ').lower()    
-        print(choice)
+        print()
         while choice not in ["hit","stand", "s","h"]:
           choice = input('Please choose "Hit(h)" or "Stand(s): ').lower()
           print()
@@ -183,3 +182,20 @@ class Game:
     
 g = Game()
 g.play()
+  
+
+  
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+
