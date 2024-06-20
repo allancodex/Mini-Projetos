@@ -77,7 +77,7 @@ class Hand:
     print(f'''{"Dealer's" if self.dealer else "Your"} hand:''')
     for index, card in enumerate(self.cards):
       if index == 0 and self.dealer \
-      and not show_all_dealer_card and not self.is_black_jack:
+      and not show_all_dealer_cards and not self.is_black_jack:
         print('hidden')
       else:
         print(card)
@@ -99,7 +99,7 @@ class Game:
       except:
         print('Insira um número')
 
-    while games_number < games2play:
+    while game_number < games2play:
       game_number += 1
       deck = Deck()
       deck.shuffle()
@@ -111,8 +111,9 @@ class Game:
         dealer_hand.add_card(deck.deal(1))
       print()
       
+      print('*'*30)
       print(f'Game {game_number} of {games2play}')
-        print('*'*30)
+      print('*'*30)
       player_hand.display()
       dealer_hand.display()
 
@@ -121,29 +122,53 @@ class Game:
 
       choice = ''
       while player_hand.get_value() < 21 and choice not in ['s', 'stand']:
-        choice = input('Please choose "Hit" or "Stand": ').lower    
-        print()
-        while choice not in ['hit','stand', 's','h']:
-          choice = input('Please choose "Hit(h)" or "Stand(s)"').lower
+        choice = input('Please choose "Hit" or "Stand": ').lower()    
+        print(choice)
+        while choice not in ["hit","stand", "s","h"]:
+          choice = input('Please choose "Hit(h)" or "Stand(s): ').lower()
           print()
-        
-        
+        if choice in ['hit', 'h']:
+          player_hand.add_card(deck.deal(1))
+          player_hand.display()
+
+      if self.check_winner(player_hand, dealer_hand):
+        continue
+
+      player_hand_value = player_hand.get_value()
+      dealer_hand_value = dealer_hand.get_value()
+
+      while dealer_hand_value < 17:
+        dealer_hand.add_card(deck.deal(1))
+        dealer_hand_value = dealer_hand.get_value()
+
+      dealer_hand.display(show_all_dealer_cards=True)
+
+      if self.check_winner(player_hand, dealer_hand):
+        continue
+
+      print(f'Final results')
+      print('your hand: ',player_hand_value)
+      print("dealer's hand: ",dealer_hand_value)
+
+      self.check_winner(player_hand, dealer_hand, True)
+    
+    print('\nThanks for playing')  
   
   def check_winner(self, player_hand, dealer_hand, game_over = False):
     if not game_over:
       if player_hand.get_value() > 21:
         print('You busted. Dealer wins!')
         return True
-      elif dealer_hand > 21:
+      elif dealer_hand.get_value() > 21:
         print('Dealer busted. You win')
         return True
-      elif dealer_hand.is_blackjack() and player_hand.is_blackjack() :
+      elif dealer_hand.is_black_jack() and player_hand.is_black_jack() :
         print('Tie!')
         return True
-      elif player_hand.is_blackjack():
+      elif player_hand.is_black_jack():
         print('You win')
         return True
-      elif dealer_hand.is_blackjack():
+      elif dealer_hand.is_black_jack():
         print('Dealer wins')
         return True
     else:
@@ -152,26 +177,9 @@ class Game:
       elif player_hand.get_value() == dealer_hand.get_value():
         print('Tie')
       else:
-        prin('Dealers wins')
+        print('Dealers wins')
       return True
     return False
     
 g = Game()
 g.play()
-  
-
-  
-  
-
-
-
-
-
-
-  
-
-
-
-
-
-
