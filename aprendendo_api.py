@@ -1,21 +1,23 @@
+#Oh Carol, I'am but a fool
+#para rodar o programa pelo terminal >> fastapi dev aprendendo_api.py <<
+
 from typing import Union
 from fastapi import FastAPI
 from pydantic import BaseModel
 
 app = FastAPI()
 
+#Classicar as características do objeto que vai ser inserido
 class Item(BaseModel):
     name:str
     price:float
     is_offer: Union[bool, None] =None
 
-#para rodar o programa pelo terminal >> fastapi dev aprendendo_api.py <<
-
 @app.get('/')
 def read_root():
     return{'Hello':'world'}
 
-@app.get('items/{item_id}')
+@app.get('/items/{item_id}')
 def read_item(item_id: int, q: Union[str, None] = None):
     return{'item_id': item_id, 'q': q}
 
